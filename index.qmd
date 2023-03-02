@@ -1,0 +1,31 @@
+---
+title: "Data Science for Public Policy"
+subtitle: "Assingment 04"
+author: "Nicholas Coukoulis(), Moeko Kondo(830159968)"
+format: 
+  pdf:
+    code-line-numbers: true
+execute: 
+  warning: false
+urlcolor: blue
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(tidyverse)
+
+glimpse(storms)
+
+ggplot(storms) +
+  geom_point(mapping = aes(x=wind, y=pressure), color="red")
+
+
+```
+
+
+
+```{r}
+
+```
+
