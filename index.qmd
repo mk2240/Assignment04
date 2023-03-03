@@ -3,7 +3,7 @@ title: "Data Science for Public Policy"
 subtitle: "Assingment 04"
 author: "Nicholas Coukoulis(), Moeko Kondo(830159968)"
 format: 
-  pdf:
+  html:
     code-line-numbers: true
 execute: 
   warning: false
@@ -28,4 +28,14 @@ ggplot(storms) +
 ```{r}
 
 ```
+
+## Stretch Exercise 
+### Part 1: .gitignore 
+When adding the data file added included in the gitignore file, the following message was returned: 
+The following paths are ignored by one of your .gitignore files:
+teachersalaries_neaestimates_2021.xlsx
+hint: Use -f if you really want to add them.
+hint: Turn this message off by running
+hint: "git config advice.addIgnoredFile false"
+
 
