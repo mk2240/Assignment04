@@ -1,7 +1,7 @@
 ---
 title: "Data Science for Public Policy"
-subtitle: "Assingment 04"
-author: "Nicholas Coukoulis(), Moeko Kondo(830159968)"
+subtitle: "Assignment 04"
+author: "Nick Coukoulis, Moeko Kondo"
 format: 
   html:
     code-line-numbers: true
@@ -11,19 +11,74 @@ urlcolor: blue
 editor_options: 
   chunk_output_type: console
 ---
-
+## Graph 1
+### K-12 Education Job Openings vs. Hires 
 ```{r}
-library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(zoo)
 
-glimpse(storms)
+openingshires <- read_excel("/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/jobopenings_hires_bls_3.2.23.xlsx")
+View (openingshires)
 
-ggplot(storms) +
-  geom_point(mapping = aes(x=wind, y=pressure), color="red")
+openingshires_long <- openingshires %>% 
+  pivot_longer(
+    cols = 3:14,
+    names_to = "month",
+    values_to = "value",
+    values_drop_na = TRUE,
+    values_transform = list(value=as.character),
+  )
 
+openingshires_long <- openingshires_long %>% 
+  mutate(date = as.yearmon(paste(month, year)))  %>%
+  group_by(date)
+
+openingshires_long$value <- as.numeric(as.character(openingshires_long$value))
+
+lim = as.yearmon(c("Jan 2012", "Dec 2022"))
+
+ggplot(data = openingshires_long, mapping = 
+         aes(x = `date`, 
+             y = value,
+             group = status)) +
+  geom_rect(aes(
+    xmin = as.yearmon("Mar 2020"),
+    xmax = as.yearmon("Dec 2022"),
+    ymin = -Inf,
+    ymax = Inf),
+    alpha =0.1,
+    fill = "#E9EDF0")+
+  geom_line(data = openingshires_long, aes(group = status, colour = status))+
+  scale_x_yearmon(limits = lim,
+                  expand = c(0, 0),
+                  breaks = unique(openingshires_long$year),
+                  format=("%Y"))+
+  scale_y_continuous (breaks = c(50, 100, 150, 200)) +
+  coord_cartesian(ylim = c(0,220))+
+  labs (title = (paste("Job Openings in Public Education Eclipse Hires Nationally")),
+        subtitle = (paste ("A troubling gap began to emerge before the pandemic that has only been compounded. ")),
+        caption = "Data: U.S. Bureau of Labor Statistics, Job Openings and Labor Turnover Survey (seasonally adjusted data)",
+        x= "",
+        y = "") +
+  scale_color_manual(name = "",
+                     values = c("openings" = "#FF0000", "hires" = "#758D99"))+
+  guides(color = guide_legend(override.aes = list(size = 3) ) )+
+  theme_minimal() + 
+  theme(panel.border = element_blank(), 
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.position = "top",
+        legend.justification = "left")
 
 ```
 
-#test message
+## Graph 2
+### 
 
 ```{r}
 
@@ -32,10 +87,12 @@ ggplot(storms) +
 ## Stretch Exercise 
 ### Part 1: .gitignore 
 When adding the data file added included in the gitignore file, the following message was returned: 
-The following paths are ignored by one of your .gitignore files:
-teachersalaries_neaestimates_2021.xlsx
-hint: Use -f if you really want to add them.
-hint: Turn this message off by running
-hint: "git config advice.addIgnoredFile false"
+  The following paths are ignored by one of your .gitignore files:
+  teachersalaries_neaestimates_2021.xlsx
+  hint: Use -f if you really want to add them.
+  hint: Turn this message off by running
+  hint: "git config advice.addIgnoredFile false"
+  
+
 
 
