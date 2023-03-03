@@ -25,7 +25,30 @@ ggplot(storms) +
 
 #test message
 
+# Question
 ```{r}
+# In the US, the shortage of public school teachers is critical problem over the years.
+# How serious the problem is? What is the etiology of the problem? 
+```
+
+
+```{r}
+
+```
+
+# graph 4
+```{r}
+library(readxl)
+library(ggplot2)
+library(tidyr)
+
+gunshooting <- read_excel("/Users/momom/Desktop/introdata/groupproject/Assignment04/gunshooting.xls", 3)
+View (gunshooting)
+
+df <- pivot_longer(gunshooting, cols=c(Deaths, Injuries), names_to="variable", values_to="value")
+
+ggplot(data = df) +
+  geom_bar(mapping = aes(x = year, y = value, fill = variable),stat="identity", position="dodge")
 
 ```
 
