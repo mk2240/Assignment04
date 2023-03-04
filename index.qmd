@@ -64,7 +64,8 @@ ggplot(data = df, mapping = aes(x = year, y = value, fill = variable)) +
 
 ```
 
-Gun violence has surged in recent years, with 46 deaths and 72 victims of cancer violence in Elementary and Middle Schools in the 2020-2021 school year despite the Covid19 shutdown. Teachers and school staff responsible for protecting students in schools are taking an increasingly heavy physical and emotional toll; [another study by the National Center for Education](https://nces.ed.gov/programs/digest/d21/tables/dt21_229.20.asp) found that reported incidents, including violent incidents and thefts, totaled 29.2 per 1000 students (2019-2020 school year). The safety of the working environment for teachers is threatened and is one of the major factors contributing to the teacher shortage. 
+Gun violence has surged in recent years, with 46 deaths and 72 victims in elementary and secondary Schools in the 2020-2021 school year despite the shutdown during the Covid-19 pandemic. Teachers and school staff responsible for students' safety in schools bear an increasingly heavy physical and psychological burdens. In addition, [another study by the National Center for Education](https://nces.ed.gov/programs/digest/d21/tables/dt21_229.20.asp) found that reported incidents, including not only gun violence but other violent incidents and thefts, totaled 29.2 per 1000 students (2019-2020 school year). Teachers are facing a situation where they have to work on their correctional education as well as secure their student safety, while their own safety is threatened.
+As such, serious school violence is one of the major factors contributing to the teacher shortage. 
 
 
 ## Stretch Exercise 
