@@ -1,7 +1,7 @@
 ---
 title: "Data Science for Public Policy"
 subtitle: "Assingment 04"
-author: "Nicholas Coukoulis(), Moeko Kondo(830159968)"
+author: "Nicholas Coukoulis, Moeko Kondo"
 format: 
   html:
     code-line-numbers: true
@@ -12,45 +12,60 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r}
-library(tidyverse)
-
-glimpse(storms)
-
-ggplot(storms) +
-  geom_point(mapping = aes(x=wind, y=pressure), color="red")
-
-
-```
-
-#test message
-
 # Question
-```{r}
-# In the US, the shortage of public school teachers is critical problem over the years.
-# How serious the problem is? What is the etiology of the problem? 
-```
-
+In the United States, the shortage of public school teachers is critical problem over the years.
+How serious the problem is? What is the etiology of the problem? 
 
 ```{r}
 
 ```
 
 # graph 4
+Data Source: [National Center for Education Statistics, Digest of Education Statistics 2021](https://nces.ed.gov/programs/digest/d21/tables/dt21_228.12.asp)
+
 ```{r}
 library(readxl)
 library(ggplot2)
 library(tidyr)
+library(tidyverse)
 
 gunshooting <- read_excel("/Users/momom/Desktop/introdata/groupproject/Assignment04/gunshooting.xls", 3)
 View (gunshooting)
 
-df <- pivot_longer(gunshooting, cols=c(Deaths, Injuries), names_to="variable", values_to="value")
+df <- pivot_longer(data = gunshooting, cols=c(Deaths, Injuries), names_to="variable", values_to="value")
 
-ggplot(data = df) +
-  geom_bar(mapping = aes(x = year, y = value, fill = variable),stat="identity", position="dodge")
+ggplot(data = df, mapping = aes(x = year, y = value, fill = variable)) +
+  geom_area() +
+  scale_fill_manual(values = c("#9966CC", "#E1BEE7")) +
+  scale_x_continuous(
+    expand = expand_scale(mult=c(0, 0.01)),
+    breaks = unique(df$year)) +
+  scale_y_continuous(
+    limits = c(0, 185),
+    breaks = seq(0, 185, by = 30),
+    expand = c(0, 0),
+    position = "left") +
+  labs(
+  title = paste("School Gun Violence"),
+  subtitle = "Increase trend in the number of gun shooting deaths and injuries in elementary and secondary \nschools from 2000 to 2020. ",
+  caption = "Data: National Center for Education Statistics, Digest of Education Statistics 2021",
+  x = "", y ="") +
+  theme_minimal() +
+  theme(panel.border = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.line = element_line(colour = "black"),
+        plot.caption = element_text(hjust = 0),
+        legend.position = "top",
+        legend.justification = "left",
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 30))
 
 ```
+
+Gun violence has surged in recent years, with 46 deaths and 72 victims of cancer violence in Elementary and Middle Schools in the 2020-2021 school year despite the Covid19 shutdown. Teachers and school staff responsible for protecting students in schools are taking an increasingly heavy physical and emotional toll; [another study by the National Center for Education](https://nces.ed.gov/programs/digest/d21/tables/dt21_229.20.asp) found that reported incidents, including violent incidents and thefts, totaled 29.2 per 1000 students (2019-2020 school year). The safety of the working environment for teachers is threatened and is one of the major factors contributing to the teacher shortage. 
+
 
 ## Stretch Exercise 
 ### Part 1: .gitignore 
