@@ -133,69 +133,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="graph-1" class="level2">
 <h2 class="anchored" data-anchor-id="graph-1">Graph 1</h2>
-<section id="k-12-education-job-openings-vs.-hires" class="level3">
-<h3 class="anchored" data-anchor-id="k-12-education-job-openings-vs.-hires">K-12 Education Job Openings vs.&nbsp;Hires</h3>
+<section id="the-decline-of-teaching-as-a-worthwhile-profession-in-the-u.s." class="level3">
+<h3 class="anchored" data-anchor-id="the-decline-of-teaching-as-a-worthwhile-profession-in-the-u.s.">The Decline of Teaching as a Worthwhile Profession in the U.S.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(zoo)</span>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Teacher Careerpath Attitudes Graph</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb1-6"><a href="#cb1-6"></a></span>
-<span id="cb1-7"><a href="#cb1-7"></a>openingshires <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/jobopenings_hires_bls_3.2.23.xlsx"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">View</span> (openingshires)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>teacherattitude <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/Teacher as Career_PDK Poll.xlsx"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">View</span> (teacherattitude)</span>
 <span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a>openingshires_long <span class="ot">&lt;-</span> openingshires <span class="sc">%&gt;%</span> </span>
+<span id="cb1-10"><a href="#cb1-10"></a>teacherattitude_long <span class="ot">&lt;-</span> teacherattitude <span class="sc">%&gt;%</span> </span>
 <span id="cb1-11"><a href="#cb1-11"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb1-12"><a href="#cb1-12"></a>    <span class="at">cols =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">14</span>,</span>
-<span id="cb1-13"><a href="#cb1-13"></a>    <span class="at">names_to =</span> <span class="st">"month"</span>,</span>
-<span id="cb1-14"><a href="#cb1-14"></a>    <span class="at">values_to =</span> <span class="st">"value"</span>,</span>
-<span id="cb1-15"><a href="#cb1-15"></a>    <span class="at">values_drop_na =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1-16"><a href="#cb1-16"></a>    <span class="at">values_transform =</span> <span class="fu">list</span>(<span class="at">value=</span>as.character),</span>
-<span id="cb1-17"><a href="#cb1-17"></a>  )</span>
-<span id="cb1-18"><a href="#cb1-18"></a></span>
-<span id="cb1-19"><a href="#cb1-19"></a>openingshires_long <span class="ot">&lt;-</span> openingshires_long <span class="sc">%&gt;%</span> </span>
-<span id="cb1-20"><a href="#cb1-20"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as.yearmon</span>(<span class="fu">paste</span>(month, year)))  <span class="sc">%&gt;%</span></span>
-<span id="cb1-21"><a href="#cb1-21"></a>  <span class="fu">group_by</span>(date)</span>
-<span id="cb1-22"><a href="#cb1-22"></a></span>
-<span id="cb1-23"><a href="#cb1-23"></a>openingshires_long<span class="sc">$</span>value <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(openingshires_long<span class="sc">$</span>value))</span>
-<span id="cb1-24"><a href="#cb1-24"></a></span>
-<span id="cb1-25"><a href="#cb1-25"></a>lim <span class="ot">=</span> <span class="fu">as.yearmon</span>(<span class="fu">c</span>(<span class="st">"Jan 2012"</span>, <span class="st">"Dec 2022"</span>))</span>
-<span id="cb1-26"><a href="#cb1-26"></a></span>
-<span id="cb1-27"><a href="#cb1-27"></a><span class="fu">ggplot</span>(<span class="at">data =</span> openingshires_long, <span class="at">mapping =</span> </span>
-<span id="cb1-28"><a href="#cb1-28"></a>         <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">date</span><span class="st">`</span>, </span>
-<span id="cb1-29"><a href="#cb1-29"></a>             <span class="at">y =</span> value,</span>
-<span id="cb1-30"><a href="#cb1-30"></a>             <span class="at">group =</span> status)) <span class="sc">+</span></span>
-<span id="cb1-31"><a href="#cb1-31"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(</span>
-<span id="cb1-32"><a href="#cb1-32"></a>    <span class="at">xmin =</span> <span class="fu">as.yearmon</span>(<span class="st">"Mar 2020"</span>),</span>
-<span id="cb1-33"><a href="#cb1-33"></a>    <span class="at">xmax =</span> <span class="fu">as.yearmon</span>(<span class="st">"Dec 2022"</span>),</span>
-<span id="cb1-34"><a href="#cb1-34"></a>    <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>,</span>
-<span id="cb1-35"><a href="#cb1-35"></a>    <span class="at">ymax =</span> <span class="cn">Inf</span>),</span>
-<span id="cb1-36"><a href="#cb1-36"></a>    <span class="at">alpha =</span><span class="fl">0.1</span>,</span>
-<span id="cb1-37"><a href="#cb1-37"></a>    <span class="at">fill =</span> <span class="st">"#E9EDF0"</span>)<span class="sc">+</span></span>
-<span id="cb1-38"><a href="#cb1-38"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> openingshires_long, <span class="fu">aes</span>(<span class="at">group =</span> status, <span class="at">colour =</span> status))<span class="sc">+</span></span>
-<span id="cb1-39"><a href="#cb1-39"></a>  <span class="fu">scale_x_yearmon</span>(<span class="at">limits =</span> lim,</span>
-<span id="cb1-40"><a href="#cb1-40"></a>                  <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
-<span id="cb1-41"><a href="#cb1-41"></a>                  <span class="at">breaks =</span> <span class="fu">unique</span>(openingshires_long<span class="sc">$</span>year),</span>
-<span id="cb1-42"><a href="#cb1-42"></a>                  <span class="at">format=</span>(<span class="st">"%Y"</span>))<span class="sc">+</span></span>
-<span id="cb1-43"><a href="#cb1-43"></a>  <span class="fu">scale_y_continuous</span> (<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">150</span>, <span class="dv">200</span>)) <span class="sc">+</span></span>
-<span id="cb1-44"><a href="#cb1-44"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">220</span>))<span class="sc">+</span></span>
-<span id="cb1-45"><a href="#cb1-45"></a>  <span class="fu">labs</span> (<span class="at">title =</span> (<span class="fu">paste</span>(<span class="st">"Job Openings in Public Education Eclipse Hires Nationally"</span>)),</span>
-<span id="cb1-46"><a href="#cb1-46"></a>        <span class="at">subtitle =</span> (<span class="fu">paste</span> (<span class="st">"A troubling gap began to emerge before the pandemic that has only been compounded."</span>)),</span>
-<span id="cb1-47"><a href="#cb1-47"></a>        <span class="at">caption =</span> <span class="st">"Data: U.S. Bureau of Labor Statistics, Job Openings and Labor Turnover Survey (seasonally adjusted data)"</span>,</span>
-<span id="cb1-48"><a href="#cb1-48"></a>        <span class="at">x=</span> <span class="st">""</span>,</span>
-<span id="cb1-49"><a href="#cb1-49"></a>        <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb1-50"><a href="#cb1-50"></a>  <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="st">""</span>,</span>
-<span id="cb1-51"><a href="#cb1-51"></a>                     <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"openings"</span> <span class="ot">=</span> <span class="st">"#FF0000"</span>, <span class="st">"hires"</span> <span class="ot">=</span> <span class="st">"#758D99"</span>))<span class="sc">+</span></span>
-<span id="cb1-52"><a href="#cb1-52"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>) ) )<span class="sc">+</span></span>
-<span id="cb1-53"><a href="#cb1-53"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb1-54"><a href="#cb1-54"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_blank</span>(), </span>
-<span id="cb1-55"><a href="#cb1-55"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb1-56"><a href="#cb1-56"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb1-57"><a href="#cb1-57"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb1-58"><a href="#cb1-58"></a>        <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"black"</span>),</span>
-<span id="cb1-59"><a href="#cb1-59"></a>        <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
-<span id="cb1-60"><a href="#cb1-60"></a>        <span class="at">legend.justification =</span> <span class="st">"left"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a href="#cb1-12"></a>    <span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>,</span>
+<span id="cb1-13"><a href="#cb1-13"></a>    <span class="at">names_to =</span> <span class="st">"viability"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14"></a>    <span class="at">values_to =</span> <span class="st">"responses"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15"></a>    <span class="at">values_drop_na =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>)</span>
+<span id="cb1-17"><a href="#cb1-17"></a></span>
+<span id="cb1-18"><a href="#cb1-18"></a>teacherattitude_long<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(teacherattitude_long<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">"%Y-%m-%d"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19"></a>lim <span class="ot">=</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">"1969-01-01"</span>, <span class="st">"2022-30-11"</span>))</span>
+<span id="cb1-20"><a href="#cb1-20"></a></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="fu">ggplot</span>(<span class="at">data =</span> teacherattitude_long, <span class="at">mapping =</span> </span>
+<span id="cb1-22"><a href="#cb1-22"></a>         <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Date</span><span class="st">`</span>, </span>
+<span id="cb1-23"><a href="#cb1-23"></a>             <span class="at">y =</span> responses, </span>
+<span id="cb1-24"><a href="#cb1-24"></a>             <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> teacherattitude_long, <span class="fu">aes</span>(<span class="at">group =</span> viability, <span class="at">colour =</span> viability)) <span class="sc">+</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>  <span class="fu">labs</span> (<span class="at">title =</span> (<span class="fu">paste</span>(<span class="st">"The Decline of Teaching as a Worthwhile Profession in the U.S."</span>)),</span>
+<span id="cb1-27"><a href="#cb1-27"></a>        <span class="at">subtitle =</span> (<span class="fu">paste</span> (<span class="st">"'Would you like to have a child of yours take up teaching in public schools as a career?'"</span>)),</span>
+<span id="cb1-28"><a href="#cb1-28"></a>        <span class="at">caption =</span> <span class="st">"Data: Annual Phi Delta Kappa Poll; selected years, 1969 through 2022."</span>,</span>
+<span id="cb1-29"><a href="#cb1-29"></a>        <span class="at">x=</span> <span class="st">""</span>,</span>
+<span id="cb1-30"><a href="#cb1-30"></a>        <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb1-31"><a href="#cb1-31"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>))<span class="sc">+</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>  <span class="fu">scale_x_date</span>(<span class="at">limits =</span> lim,</span>
+<span id="cb1-33"><a href="#cb1-33"></a>               <span class="at">date_breaks =</span> (<span class="st">"3 years"</span>),</span>
+<span id="cb1-34"><a href="#cb1-34"></a>               <span class="at">date_labels=</span>(<span class="st">"%Y"</span>))<span class="sc">+</span></span>
+<span id="cb1-35"><a href="#cb1-35"></a>  <span class="fu">scale_y_continuous</span> (<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>))<span class="sc">+</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>  <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="st">"United States, % responding 'yes' or 'no'"</span>,</span>
+<span id="cb1-37"><a href="#cb1-37"></a>                     <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"No"</span> <span class="ot">=</span> <span class="st">"#FF0000"</span>, <span class="st">"Yes"</span> <span class="ot">=</span> <span class="st">"#1879CE"</span>))<span class="sc">+</span></span>
+<span id="cb1-38"><a href="#cb1-38"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>) ) )<span class="sc">+</span></span>
+<span id="cb1-39"><a href="#cb1-39"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb1-40"><a href="#cb1-40"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb1-41"><a href="#cb1-41"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-42"><a href="#cb1-42"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-43"><a href="#cb1-43"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-44"><a href="#cb1-44"></a>        <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb1-45"><a href="#cb1-45"></a>        <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb1-46"><a href="#cb1-46"></a>        <span class="at">legend.justification =</span> <span class="st">"left"</span>,</span>
+<span id="cb1-47"><a href="#cb1-47"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -204,10 +194,121 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="graph-2" class="level2">
 <h2 class="anchored" data-anchor-id="graph-2">Graph 2</h2>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section"></h3>
+<section id="u.s.-public-k-12-education-job-openings-vs.-hires" class="level3">
+<h3 class="anchored" data-anchor-id="u.s.-public-k-12-education-job-openings-vs.-hires">U.S. Public K-12 Education Job Openings vs.&nbsp;Hires</h3>
 <div class="cell">
-
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="fu">library</span>(zoo)</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a>openingshires <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/jobopenings_hires_bls_3.2.23.xlsx"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="fu">View</span> (openingshires)</span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a>openingshires_long <span class="ot">&lt;-</span> openingshires <span class="sc">%&gt;%</span> </span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    <span class="at">cols =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">14</span>,</span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="at">names_to =</span> <span class="st">"month"</span>,</span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="at">values_to =</span> <span class="st">"value"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15"></a>    <span class="at">values_drop_na =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-16"><a href="#cb2-16"></a>    <span class="at">values_transform =</span> <span class="fu">list</span>(<span class="at">value=</span>as.character),</span>
+<span id="cb2-17"><a href="#cb2-17"></a>  )</span>
+<span id="cb2-18"><a href="#cb2-18"></a></span>
+<span id="cb2-19"><a href="#cb2-19"></a>openingshires_long <span class="ot">&lt;-</span> openingshires_long <span class="sc">%&gt;%</span> </span>
+<span id="cb2-20"><a href="#cb2-20"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as.yearmon</span>(<span class="fu">paste</span>(month, year)))  <span class="sc">%&gt;%</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>  <span class="fu">group_by</span>(date)</span>
+<span id="cb2-22"><a href="#cb2-22"></a></span>
+<span id="cb2-23"><a href="#cb2-23"></a>openingshires_long<span class="sc">$</span>value <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(openingshires_long<span class="sc">$</span>value))</span>
+<span id="cb2-24"><a href="#cb2-24"></a></span>
+<span id="cb2-25"><a href="#cb2-25"></a>lim <span class="ot">=</span> <span class="fu">as.yearmon</span>(<span class="fu">c</span>(<span class="st">"Jan 2012"</span>, <span class="st">"Dec 2022"</span>))</span>
+<span id="cb2-26"><a href="#cb2-26"></a></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="fu">ggplot</span>(<span class="at">data =</span> openingshires_long, <span class="at">mapping =</span> </span>
+<span id="cb2-28"><a href="#cb2-28"></a>         <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">date</span><span class="st">`</span>, </span>
+<span id="cb2-29"><a href="#cb2-29"></a>             <span class="at">y =</span> value,</span>
+<span id="cb2-30"><a href="#cb2-30"></a>             <span class="at">group =</span> status)) <span class="sc">+</span></span>
+<span id="cb2-31"><a href="#cb2-31"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(</span>
+<span id="cb2-32"><a href="#cb2-32"></a>    <span class="at">xmin =</span> <span class="fu">as.yearmon</span>(<span class="st">"Mar 2020"</span>),</span>
+<span id="cb2-33"><a href="#cb2-33"></a>    <span class="at">xmax =</span> <span class="fu">as.yearmon</span>(<span class="st">"Dec 2022"</span>),</span>
+<span id="cb2-34"><a href="#cb2-34"></a>    <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>,</span>
+<span id="cb2-35"><a href="#cb2-35"></a>    <span class="at">ymax =</span> <span class="cn">Inf</span>),</span>
+<span id="cb2-36"><a href="#cb2-36"></a>    <span class="at">alpha =</span><span class="fl">0.1</span>,</span>
+<span id="cb2-37"><a href="#cb2-37"></a>    <span class="at">fill =</span> <span class="st">"#E9EDF0"</span>)<span class="sc">+</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> openingshires_long, <span class="fu">aes</span>(<span class="at">group =</span> status, <span class="at">colour =</span> status))<span class="sc">+</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a>  <span class="fu">scale_x_yearmon</span>(<span class="at">limits =</span> lim,</span>
+<span id="cb2-40"><a href="#cb2-40"></a>                  <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb2-41"><a href="#cb2-41"></a>                  <span class="at">breaks =</span> <span class="fu">unique</span>(openingshires_long<span class="sc">$</span>year),</span>
+<span id="cb2-42"><a href="#cb2-42"></a>                  <span class="at">format=</span>(<span class="st">"%Y"</span>))<span class="sc">+</span></span>
+<span id="cb2-43"><a href="#cb2-43"></a>  <span class="fu">scale_y_continuous</span> (<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">150</span>, <span class="dv">200</span>)) <span class="sc">+</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">220</span>))<span class="sc">+</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a>  <span class="fu">labs</span> (<span class="at">title =</span> (<span class="fu">paste</span>(<span class="st">"Job Openings in K-12 Public Education Eclipse Hires Nationally"</span>)),</span>
+<span id="cb2-46"><a href="#cb2-46"></a>        <span class="at">subtitle =</span> (<span class="fu">paste</span> (<span class="st">"A troubling gap began to emerge before the pandemic that has only been compounded."</span>)),</span>
+<span id="cb2-47"><a href="#cb2-47"></a>        <span class="at">caption =</span> <span class="st">"Data: U.S. Bureau of Labor Statistics, Job Openings and Labor Turnover Survey (seasonally adjusted data)"</span>,</span>
+<span id="cb2-48"><a href="#cb2-48"></a>        <span class="at">x=</span> <span class="st">""</span>,</span>
+<span id="cb2-49"><a href="#cb2-49"></a>        <span class="at">y =</span> <span class="st">"Amount in Thousands"</span>) <span class="sc">+</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a>  <span class="fu">scale_color_manual</span>(<span class="at">name =</span> <span class="st">""</span>,</span>
+<span id="cb2-51"><a href="#cb2-51"></a>                     <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"openings"</span> <span class="ot">=</span> <span class="st">"#FF0000"</span>, <span class="st">"hires"</span> <span class="ot">=</span> <span class="st">"#758D99"</span>), <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">"Hires"</span>, <span class="st">"Openings"</span>))<span class="sc">+</span></span>
+<span id="cb2-52"><a href="#cb2-52"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>) ) )<span class="sc">+</span></span>
+<span id="cb2-53"><a href="#cb2-53"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb2-54"><a href="#cb2-54"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb2-55"><a href="#cb2-55"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb2-56"><a href="#cb2-56"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb2-57"><a href="#cb2-57"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb2-58"><a href="#cb2-58"></a>        <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb2-59"><a href="#cb2-59"></a>        <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb2-60"><a href="#cb2-60"></a>        <span class="at">legend.justification =</span> <span class="st">"left"</span>,</span>
+<span id="cb2-61"><a href="#cb2-61"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="graph-3" class="level2">
+<h2 class="anchored" data-anchor-id="graph-3">Graph 3</h2>
+<section id="in-which-states-do-teachers-earn-the-most" class="level3">
+<h3 class="anchored" data-anchor-id="in-which-states-do-teachers-earn-the-most">In Which States do Teachers Earn the Most?</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#Lollipop Salaries Graph</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span> (ggplot2)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a>teachersalary <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/teachersalaries_neaestimates_2022.xlsx"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="fu">View</span> (teachersalary)</span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a>teachersalary <span class="ot">&lt;-</span> teachersalary <span class="sc">%&gt;%</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>  <span class="fu">arrange</span>(salary) <span class="sc">%&gt;%</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>  <span class="fu">mutate</span>(<span class="at">state =</span> <span class="fu">factor</span>(state, <span class="at">levels =</span> .<span class="sc">$</span>state))</span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="fu">ggplot</span>(teachersalary, <span class="fu">aes</span>(salary, state, <span class="at">color =</span> <span class="st">"#E3120B"</span>))  <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y=</span>state, <span class="at">xend =</span> salary, <span class="at">yend =</span> state), <span class="at">color =</span> <span class="st">"grey50"</span>) <span class="sc">+</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">67507</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>  <span class="fu">labs</span> (<span class="at">title =</span> (<span class="fu">paste</span>(<span class="st">"In Which States do Teachers Earn the Most?"</span>)),</span>
+<span id="cb3-21"><a href="#cb3-21"></a>        <span class="at">subtitle =</span> (<span class="fu">paste</span> (<span class="st">"Average U.S. K-12 Public Teacher Salary Estimates by State"</span>)),</span>
+<span id="cb3-22"><a href="#cb3-22"></a>        <span class="at">caption =</span> <span class="st">"Data: National Education Association Rankings and Estimates Report, 2022"</span>,</span>
+<span id="cb3-23"><a href="#cb3-23"></a>        <span class="at">x=</span> <span class="st">""</span>,</span>
+<span id="cb3-24"><a href="#cb3-24"></a>        <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-26"><a href="#cb3-26"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-27"><a href="#cb3-27"></a>        <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-28"><a href="#cb3-28"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-29"><a href="#cb3-29"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb3-30"><a href="#cb3-30"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb3-31"><a href="#cb3-31"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </section>
 </section>

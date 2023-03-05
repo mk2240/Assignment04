@@ -5,6 +5,7 @@ author: "Nick Coukoulis, Moeko Kondo"
 format: 
   html:
     code-line-numbers: true
+    code-fold: true
 execute: 
   warning: false
 urlcolor: blue
@@ -12,7 +13,59 @@ editor_options:
   chunk_output_type: console
 ---
 ## Graph 1
-### K-12 Education Job Openings vs. Hires 
+### The Decline of Teaching as a Worthwhile Profession in the U.S. 
+```{r}
+# Teacher Careerpath Attitudes Graph
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+teacherattitude <- read_excel("/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/Teacher as Career_PDK Poll.xlsx")
+View (teacherattitude)
+
+teacherattitude_long <- teacherattitude %>% 
+  pivot_longer(
+    cols = 2:3,
+    names_to = "viability",
+    values_to = "responses",
+    values_drop_na = TRUE
+)
+
+teacherattitude_long$Date <- as.Date(teacherattitude_long$Date, format = "%Y-%m-%d")
+lim = as.Date(c("1969-01-01", "2022-30-11"))
+
+ggplot(data = teacherattitude_long, mapping = 
+         aes(x = `Date`, 
+             y = responses, 
+             group = 1)) +
+  geom_line(data = teacherattitude_long, aes(group = viability, colour = viability)) +
+  labs (title = (paste("The Decline of Teaching as a Worthwhile Profession in the U.S.")),
+        subtitle = (paste ("'Would you like to have a child of yours take up teaching in public schools as a career?'")),
+        caption = "Data: Annual Phi Delta Kappa Poll; selected years, 1969 through 2022.",
+        x= "",
+        y = "") +
+  coord_cartesian(ylim = c(0,100))+
+  scale_x_date(limits = lim,
+               date_breaks = ("3 years"),
+               date_labels=("%Y"))+
+  scale_y_continuous (breaks = c(25, 50, 75, 100))+
+  scale_color_manual(name = "United States, % responding 'yes' or 'no'",
+                     values = c("No" = "#FF0000", "Yes" = "#1879CE"))+
+  guides(color = guide_legend(override.aes = list(size = 3) ) )+
+  theme_bw() + 
+  theme(panel.border = element_blank(), 
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.position = "top",
+        legend.justification = "left",
+        plot.caption = element_text(hjust = 0))
+```
+
+## Graph 2
+### U.S. Public K-12 Education Job Openings vs. Hires
 ```{r}
 library(readxl)
 library(ggplot2)
@@ -58,13 +111,13 @@ ggplot(data = openingshires_long, mapping =
                   format=("%Y"))+
   scale_y_continuous (breaks = c(50, 100, 150, 200)) +
   coord_cartesian(ylim = c(0,220))+
-  labs (title = (paste("Job Openings in Public Education Eclipse Hires Nationally")),
-        subtitle = (paste ("A troubling gap began to emerge before the pandemic that has only been compounded. ")),
+  labs (title = (paste("Job Openings in K-12 Public Education Eclipse Hires Nationally")),
+        subtitle = (paste ("A troubling gap began to emerge before the pandemic that has only been compounded.")),
         caption = "Data: U.S. Bureau of Labor Statistics, Job Openings and Labor Turnover Survey (seasonally adjusted data)",
         x= "",
-        y = "") +
+        y = "Amount in Thousands") +
   scale_color_manual(name = "",
-                     values = c("openings" = "#FF0000", "hires" = "#758D99"))+
+                     values = c("openings" = "#FF0000", "hires" = "#758D99"), labels= c("Hires", "Openings"))+
   guides(color = guide_legend(override.aes = list(size = 3) ) )+
   theme_minimal() + 
   theme(panel.border = element_blank(), 
@@ -73,15 +126,45 @@ ggplot(data = openingshires_long, mapping =
         panel.grid.minor.y = element_blank(),
         axis.line = element_line(colour = "black"),
         legend.position = "top",
-        legend.justification = "left")
+        legend.justification = "left",
+        plot.caption = element_text(hjust = 0))
 
 ```
 
-## Graph 2
-### 
-
+## Graph 3
+### In Which States do Teachers Earn the Most? 
 ```{r}
+#Lollipop Salaries Graph
+library (ggplot2)
+library(dplyr)
+library(readxl)
+library(forcats)
+library(tidyr)
+library(stringr)
 
+teachersalary <- read_excel("/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/teachersalaries_neaestimates_2022.xlsx")
+View (teachersalary)
+
+teachersalary <- teachersalary %>%
+  arrange(salary) %>%
+  mutate(state = factor(state, levels = .$state))
+
+ggplot(teachersalary, aes(salary, state, color = "#E3120B"))  +
+  geom_segment(aes(x = 0, y=state, xend = salary, yend = state), color = "grey50") +
+  geom_point()+
+  geom_vline(xintercept = 67507, linetype = "dotted") +
+  labs (title = (paste("In Which States do Teachers Earn the Most?")),
+        subtitle = (paste ("Average U.S. K-12 Public Teacher Salary Estimates by State")),
+        caption = "Data: National Education Association Rankings and Estimates Report, 2022",
+        x= "",
+        y = "") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.background = element_blank(), 
+        legend.position = "none",
+        plot.caption = element_text(hjust = 0))
 ```
 
 ## Stretch Exercise 
