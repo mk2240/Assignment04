@@ -131,10 +131,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="graph-1" class="level2">
-<h2 class="anchored" data-anchor-id="graph-1">Graph 1</h2>
-<section id="the-decline-of-teaching-as-a-worthwhile-profession-in-the-u.s." class="level3">
-<h3 class="anchored" data-anchor-id="the-decline-of-teaching-as-a-worthwhile-profession-in-the-u.s.">The Decline of Teaching as a Worthwhile Profession in the U.S.</h3>
+<section id="a-visual-introduction-to-critical-teacher-shortages-in-the-u.s." class="level2">
+<h2 class="anchored" data-anchor-id="a-visual-introduction-to-critical-teacher-shortages-in-the-u.s.">A Visual Introduction to Critical Teacher Shortages in the U.S.</h2>
+<p>The U.S. reckoned with teacher shortages at the start of the 2022-2023 school year in August 2022. As children and families across the country prepared to start school for the first time or return for a new year, the Washington Post declared by headline on August 3, “’Never seen it this bad’: America faces catastrophic teacher shortage” (Natanson, 2022).</p>
+<p>Teacher shortages are already resulting in school closures and reduced hours in the classroom, posing an existential threat to a free, high-quality public education in the U.S. for future generations. Given the stakes of teacher shortages, it’s worth investigating how the current teacher shortage came to be.</p>
+</section>
+<section id="the-decline-of-teaching-as-a-worthwhile-profession-in-the-u.s." class="level2">
+<h2 class="anchored" data-anchor-id="the-decline-of-teaching-as-a-worthwhile-profession-in-the-u.s.">The Decline of Teaching as a Worthwhile Profession in the U.S.</h2>
+<p>Perceptions of teaching in the U.S. as a worthwhile career for children to pursue have fallen to critical lows in recent years. Low public opinion is bound to impact the national stock of teachers in the future, as well as potentially impact morale among current teachers if they feel they aren’t respected by parents and others in their communities.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -191,11 +195,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-</section>
-<section id="graph-2" class="level2">
-<h2 class="anchored" data-anchor-id="graph-2">Graph 2</h2>
-<section id="u.s.-public-k-12-education-job-openings-vs.-hires" class="level3">
-<h3 class="anchored" data-anchor-id="u.s.-public-k-12-education-job-openings-vs.-hires">U.S. Public K-12 Education Job Openings vs.&nbsp;Hires</h3>
+<section id="comparing-u.s.-public-k-12-education-job-openings-and-hires" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-u.s.-public-k-12-education-job-openings-and-hires">Comparing U.S. Public K-12 Education Job Openings and Hires</h2>
+<p>The number of job openings began to outpace hires just a couple years after public opinion of teaching began to fall. Starting in 2019, we saw a small, ongoing gap begin to emerge between job openings and hires for positions in the U.S. K-12 public education sector. The pandemic only exacerbated the gap, prompting a mass exodus and leaving a much larger number of positions open than the field has been able to recruit for - a dynamic that continues today based on the latest data from the U.S. Bureau of Labor Statistics (most recent data available through December 2022).</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -266,51 +268,98 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-</section>
-<section id="graph-3" class="level2">
-<h2 class="anchored" data-anchor-id="graph-3">Graph 3</h2>
-<section id="in-which-states-do-teachers-earn-the-most" class="level3">
-<h3 class="anchored" data-anchor-id="in-which-states-do-teachers-earn-the-most">In Which States do Teachers Earn the Most?</h3>
+<section id="comparing-teacher-pay-across-states" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-teacher-pay-across-states">Comparing Teacher Pay across States</h2>
+<p>Pay has become nearly universally identified as one of the biggest barriers preventing potential educators from entering the field and existing educators from staying. The recently proposed American Teachers Act is seeking to offer federal grant money to bring teachers’ salaries to a baseline of $60K nationally. The NEA estimates the average national salary for teachers at $68K for all U.S. states (including Washington, DC); however, pay in over two-thirds of U.S. states falls below the national average.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#Lollipop Salaries Graph</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span> (ggplot2)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb3-8"><a href="#cb3-8"></a></span>
-<span id="cb3-9"><a href="#cb3-9"></a>teachersalary <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/teachersalaries_neaestimates_2022.xlsx"</span>)</span>
-<span id="cb3-10"><a href="#cb3-10"></a><span class="fu">View</span> (teachersalary)</span>
-<span id="cb3-11"><a href="#cb3-11"></a></span>
-<span id="cb3-12"><a href="#cb3-12"></a>teachersalary <span class="ot">&lt;-</span> teachersalary <span class="sc">%&gt;%</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a>  <span class="fu">arrange</span>(salary) <span class="sc">%&gt;%</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a>  <span class="fu">mutate</span>(<span class="at">state =</span> <span class="fu">factor</span>(state, <span class="at">levels =</span> .<span class="sc">$</span>state))</span>
-<span id="cb3-15"><a href="#cb3-15"></a></span>
-<span id="cb3-16"><a href="#cb3-16"></a><span class="fu">ggplot</span>(teachersalary, <span class="fu">aes</span>(salary, state, <span class="at">color =</span> <span class="st">"#E3120B"</span>))  <span class="sc">+</span></span>
-<span id="cb3-17"><a href="#cb3-17"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y=</span>state, <span class="at">xend =</span> salary, <span class="at">yend =</span> state), <span class="at">color =</span> <span class="st">"grey50"</span>) <span class="sc">+</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb3-19"><a href="#cb3-19"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">67507</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a>  <span class="fu">labs</span> (<span class="at">title =</span> (<span class="fu">paste</span>(<span class="st">"In Which States do Teachers Earn the Most?"</span>)),</span>
-<span id="cb3-21"><a href="#cb3-21"></a>        <span class="at">subtitle =</span> (<span class="fu">paste</span> (<span class="st">"Average U.S. K-12 Public Teacher Salary Estimates by State"</span>)),</span>
-<span id="cb3-22"><a href="#cb3-22"></a>        <span class="at">caption =</span> <span class="st">"Data: National Education Association Rankings and Estimates Report, 2022"</span>,</span>
-<span id="cb3-23"><a href="#cb3-23"></a>        <span class="at">x=</span> <span class="st">""</span>,</span>
-<span id="cb3-24"><a href="#cb3-24"></a>        <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb3-25"><a href="#cb3-25"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb3-26"><a href="#cb3-26"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb3-27"><a href="#cb3-27"></a>        <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb3-28"><a href="#cb3-28"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb3-29"><a href="#cb3-29"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>(), </span>
-<span id="cb3-30"><a href="#cb3-30"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
-<span id="cb3-31"><a href="#cb3-31"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span> (ggplot2)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a>teachersalary <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/teachersalaries_neaestimates_2022.xlsx"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="fu">View</span> (teachersalary)</span>
+<span id="cb3-10"><a href="#cb3-10"></a></span>
+<span id="cb3-11"><a href="#cb3-11"></a>teachersalary <span class="ot">&lt;-</span> teachersalary <span class="sc">%&gt;%</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>  <span class="fu">arrange</span>(salary) <span class="sc">%&gt;%</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>  <span class="fu">mutate</span>(<span class="at">state =</span> <span class="fu">factor</span>(state, <span class="at">levels =</span> .<span class="sc">$</span>state))</span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="fu">ggplot</span>(teachersalary, <span class="fu">aes</span>(salary, state, <span class="at">color =</span> <span class="st">"#E3120B"</span>))  <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y=</span>state, <span class="at">xend =</span> salary, <span class="at">yend =</span> state), <span class="at">color =</span> <span class="st">"grey50"</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">67507</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>  <span class="fu">labs</span> (<span class="at">title =</span> (<span class="fu">paste</span>(<span class="st">"In Which States do Teachers Earn the Most?"</span>)),</span>
+<span id="cb3-20"><a href="#cb3-20"></a>        <span class="at">subtitle =</span> (<span class="fu">paste</span> (<span class="st">"Average U.S. K-12 Public Teacher Salary Estimates by State"</span>)),</span>
+<span id="cb3-21"><a href="#cb3-21"></a>        <span class="at">caption =</span> <span class="st">"Data: National Education Association Rankings and Estimates Report, 2022"</span>,</span>
+<span id="cb3-22"><a href="#cb3-22"></a>        <span class="at">x=</span> <span class="st">""</span>,</span>
+<span id="cb3-23"><a href="#cb3-23"></a>        <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-25"><a href="#cb3-25"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-26"><a href="#cb3-26"></a>        <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-27"><a href="#cb3-27"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-28"><a href="#cb3-28"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb3-29"><a href="#cb3-29"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb3-30"><a href="#cb3-30"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
+<section id="gun-violence-in-u.s.-public-k-12-schools-is-surging" class="level2">
+<h2 class="anchored" data-anchor-id="gun-violence-in-u.s.-public-k-12-schools-is-surging">Gun Violence in U.S. Public K-12 Schools is Surging</h2>
+<p>Gun violence has surged in recent years, with 46 deaths and 72 victims in public K-12 schools in the 2020-2021 school year alone – even in spite of shutdowns due to the Covid-19 pandemic.</p>
+<p>Teachers and school staff responsible for students’ safety in schools bear increasingly heavy physical and psychological tolls from shootings. Figures from the <a href="https://nces.ed.gov/programs/digest/d21/tables/dt21_229.20.asp">National Center for Education Statistics</a> show that reported incidents, including not only gun violence but other violent incidents and thefts, totaled 29.2 per 1000 students (2019-2020 school year).</p>
+<p>Teachers are being required to address the social/emotional health needs of all their students, as well as securing students’ safety - all while their own safety is at risk. Violence in schools as a contributor to overall climate merits further investigation as a major factor contributing to a national teacher shortage.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a>gunshooting <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/gunshooting.xls"</span>, <span class="dv">3</span>)</span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">View</span> (gunshooting)</span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a>df <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(<span class="at">data =</span> gunshooting, <span class="at">cols=</span><span class="fu">c</span>(Deaths, Injuries), <span class="at">names_to=</span><span class="st">"variable"</span>, <span class="at">values_to=</span><span class="st">"value"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> value, <span class="at">fill =</span> variable)) <span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>  <span class="fu">geom_area</span>() <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#9966CC"</span>, <span class="st">"#E1BEE7"</span>)) <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb4-15"><a href="#cb4-15"></a>    <span class="at">expand =</span> <span class="fu">expand_scale</span>(<span class="at">mult=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.01</span>)),</span>
+<span id="cb4-16"><a href="#cb4-16"></a>    <span class="at">breaks =</span> <span class="fu">unique</span>(df<span class="sc">$</span>year)) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb4-18"><a href="#cb4-18"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">185</span>),</span>
+<span id="cb4-19"><a href="#cb4-19"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">185</span>, <span class="at">by =</span> <span class="dv">30</span>),</span>
+<span id="cb4-20"><a href="#cb4-20"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb4-21"><a href="#cb4-21"></a>    <span class="at">position =</span> <span class="st">"left"</span>) <span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-23"><a href="#cb4-23"></a>    <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Gun Violence in Schools"</span>),</span>
+<span id="cb4-24"><a href="#cb4-24"></a>    <span class="at">subtitle =</span> <span class="st">"Increase trend in the number of gun shooting deaths and injuries in elementary and secondary </span><span class="sc">\n</span><span class="st">schools from 2000 to 2020. "</span>,</span>
+<span id="cb4-25"><a href="#cb4-25"></a>    <span class="at">caption =</span> <span class="st">"Data: National Center for Education Statistics, Digest of Education Statistics 2021"</span>,</span>
+<span id="cb4-26"><a href="#cb4-26"></a>    <span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span><span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a>  <span class="fu">theme</span>(<span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb4-29"><a href="#cb4-29"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb4-30"><a href="#cb4-30"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb4-31"><a href="#cb4-31"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb4-32"><a href="#cb4-32"></a>        <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb4-33"><a href="#cb4-33"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>),</span>
+<span id="cb4-34"><a href="#cb4-34"></a>        <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb4-35"><a href="#cb4-35"></a>        <span class="at">legend.justification =</span> <span class="st">"left"</span>,</span>
+<span id="cb4-36"><a href="#cb4-36"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb4-37"><a href="#cb4-37"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
 <section id="stretch-exercise" class="level2">
 <h2 class="anchored" data-anchor-id="stretch-exercise">Stretch Exercise</h2>

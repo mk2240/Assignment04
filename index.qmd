@@ -12,8 +12,14 @@ urlcolor: blue
 editor_options: 
   chunk_output_type: console
 ---
-## Graph 1
-### The Decline of Teaching as a Worthwhile Profession in the U.S. 
+## A Visual Introduction to Critical Teacher Shortages in the U.S. 
+The U.S. reckoned with teacher shortages at the start of the 2022-2023 school year in August 2022. As children and families across the country prepared to start school for the first time or return for a new year, the Washington Post declared by headline on August 3, “’Never seen it this bad’: America faces catastrophic teacher shortage” (Natanson, 2022). 
+
+Teacher shortages are already resulting in school closures and reduced hours in the classroom, posing an existential threat to a free, high-quality public education in the U.S. for future generations. Given the stakes of teacher shortages, it's worth investigating how the current teacher shortage came to be.
+
+## The Decline of Teaching as a Worthwhile Profession in the U.S. 
+Perceptions of teaching in the U.S. as a worthwhile career for children to pursue have fallen to critical lows in recent years. Low public opinion is bound to impact the national stock of teachers in the future, as well as potentially impact morale among current teachers if they feel they aren't respected by parents and others in their communities.  
+
 ```{r}
 # Teacher Careerpath Attitudes Graph
 library(readxl)
@@ -64,8 +70,9 @@ ggplot(data = teacherattitude_long, mapping =
         plot.caption = element_text(hjust = 0))
 ```
 
-## Graph 2
-### U.S. Public K-12 Education Job Openings vs. Hires
+## Comparing U.S. Public K-12 Education Job Openings and Hires
+The number of job openings began to outpace hires just a couple years after public opinion of teaching began to fall. Starting in 2019, we saw a small, ongoing gap begin to emerge between job openings and hires for positions in the U.S. K-12 public education sector. The pandemic only exacerbated the gap, prompting a mass exodus and leaving a much larger number of positions open than the field has been able to recruit for - a dynamic that continues today based on the latest data from the U.S. Bureau of Labor Statistics (most recent data available through December 2022). 
+
 ```{r}
 library(readxl)
 library(ggplot2)
@@ -131,10 +138,10 @@ ggplot(data = openingshires_long, mapping =
 
 ```
 
-## Graph 3
-### In Which States do Teachers Earn the Most? 
+## Comparing Teacher Pay across States
+Pay has become nearly universally identified as one of the biggest barriers preventing potential educators from entering the field and existing educators from staying. The recently proposed American Teachers Act is seeking to offer federal grant money to bring teachers' salaries to a baseline of $60K nationally. The NEA estimates the average national salary for teachers at $68K for all U.S. states (including Washington, DC); however, pay in over two-thirds of U.S. states falls below the national average.
+
 ```{r}
-#Lollipop Salaries Graph
 library (ggplot2)
 library(dplyr)
 library(readxl)
@@ -165,6 +172,54 @@ ggplot(teachersalary, aes(salary, state, color = "#E3120B"))  +
         panel.background = element_blank(), 
         legend.position = "none",
         plot.caption = element_text(hjust = 0))
+```
+
+## Gun Violence in U.S. Public K-12 Schools is Surging
+Gun violence has surged in recent years, with 46 deaths and 72 victims in public K-12 schools in the 2020-2021 school year alone -- even in spite of shutdowns due to the Covid-19 pandemic.
+
+Teachers and school staff responsible for students' safety in schools bear increasingly heavy physical and psychological tolls from shootings. Figures from the [National Center for Education Statistics](https://nces.ed.gov/programs/digest/d21/tables/dt21_229.20.asp) show that reported incidents, including not only gun violence but other violent incidents and thefts, totaled 29.2 per 1000 students (2019-2020 school year). 
+
+Teachers are being required to address the social/emotional health needs of all their students, as well as securing students' safety - all while their own safety is at risk. Violence in schools as a contributor to overall climate merits further investigation as a major factor contributing to a national teacher shortage. 
+
+```{r}
+library(readxl)
+library(ggplot2)
+library(tidyr)
+library(tidyverse)
+
+gunshooting <- read_excel("/Users/nicholascoukoulis/Documents/Georgetown/MPP/Spring2023/DataScience/assignments/assignment04/Assignment04/gunshooting.xls", 3)
+View (gunshooting)
+
+df <- pivot_longer(data = gunshooting, cols=c(Deaths, Injuries), names_to="variable", values_to="value")
+
+ggplot(data = df, mapping = aes(x = year, y = value, fill = variable)) +
+  geom_area() +
+  scale_fill_manual(values = c("#9966CC", "#E1BEE7")) +
+  scale_x_continuous(
+    expand = expand_scale(mult=c(0, 0.01)),
+    breaks = unique(df$year)) +
+  scale_y_continuous(
+    limits = c(0, 185),
+    breaks = seq(0, 185, by = 30),
+    expand = c(0, 0),
+    position = "left") +
+  labs(
+    title = paste("Gun Violence in Schools"),
+    subtitle = "Increase trend in the number of gun shooting deaths and injuries in elementary and secondary \nschools from 2000 to 2020. ",
+    caption = "Data: National Center for Education Statistics, Digest of Education Statistics 2021",
+    x = "", y ="") +
+  theme_minimal() +
+  theme(panel.border = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.line = element_line(colour = "black"),
+        plot.caption = element_text(hjust = 0),
+        legend.position = "top",
+        legend.justification = "left",
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 30))
+
 ```
 
 ## Stretch Exercise 
